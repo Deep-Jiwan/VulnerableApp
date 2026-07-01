@@ -1,0 +1,64 @@
+env:
+  contexts:
+  - name: "vulnerableapp"
+    urls:
+    - "http://localhost:9090/VulnerableApp"
+  parameters:
+    failOnError: false
+    failOnWarning: false
+jobs:
+- type: requestor
+  parameters:
+    user: ""
+  requests:
+  # SQL Injection - Error Based (raw SQL errors returned in response body)
+  - url: "http://localhost:9090/VulnerableApp/ErrorBasedSQLInjectionVulnerability/LEVEL_1?id=1"
+    method: GET
+  - url: "http://localhost:9090/VulnerableApp/ErrorBasedSQLInjectionVulnerability/LEVEL_2?id=1"
+    method: GET
+  - url: "http://localhost:9090/VulnerableApp/ErrorBasedSQLInjectionVulnerability/LEVEL_3?id=1"
+    method: GET
+  - url: "http://localhost:9090/VulnerableApp/ErrorBasedSQLInjectionVulnerability/LEVEL_4?id=1"
+    method: GET
+  # SQL Injection - Union Based
+  - url: "http://localhost:9090/VulnerableApp/UnionBasedSQLInjectionVulnerability/LEVEL_1?id=1"
+    method: GET
+  - url: "http://localhost:9090/VulnerableApp/UnionBasedSQLInjectionVulnerability/LEVEL_2?id=1"
+    method: GET
+  # SQL Injection - Blind
+  - url: "http://localhost:9090/VulnerableApp/BlindSQLInjectionVulnerability/LEVEL_1?id=1"
+    method: GET
+  - url: "http://localhost:9090/VulnerableApp/BlindSQLInjectionVulnerability/LEVEL_2?id=1"
+    method: GET
+  # XSS - Reflected (HTML injection, raw unescaped reflection in response)
+  - url: "http://localhost:9090/VulnerableApp/XSSWithHtmlTagInjection/LEVEL_1?name=test"
+    method: GET
+  - url: "http://localhost:9090/VulnerableApp/XSSWithHtmlTagInjection/LEVEL_2?name=test"
+    method: GET
+  - url: "http://localhost:9090/VulnerableApp/XSSWithHtmlTagInjection/LEVEL_3?name=test"
+    method: GET
+  - url: "http://localhost:9090/VulnerableApp/XSSInImgTagAttribute/LEVEL_1?name=test"
+    method: GET
+  # Command Injection (requires unsafe profile - active)
+  - url: "http://localhost:9090/VulnerableApp/CommandInjection/LEVEL_1?ipaddress=127.0.0.1"
+    method: GET
+  - url: "http://localhost:9090/VulnerableApp/CommandInjection/LEVEL_2?ipaddress=127.0.0.1"
+    method: GET
+- type: spider
+  parameters:
+    url: "http://localhost:9090/VulnerableApp"
+    maxDuration: 5
+- type: activeScan
+  parameters:
+    context: "vulnerableapp"
+    maxRuleDurationInMins: 20
+    threadPerHost: 3
+- type: report
+  parameters:
+    template: "traditional-json"
+    reportFile: "/zap/wrk/zap-report.json"
+  risks:
+  - high
+  - medium
+  - low
+  - info
