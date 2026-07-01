@@ -2,12 +2,6 @@ name: "CodeQL SAST Scan (VulnerableApp)"
 
 on:
   workflow_dispatch:
-  push:
-    branches: [master]
-    paths:
-      - 'src/**'
-      - 'build.gradle'
-      - '.github/workflows/codeql.yml'
 
 jobs:
   analyze:

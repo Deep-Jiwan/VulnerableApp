@@ -2,11 +2,6 @@ name: "ZAP DAST Scan (VulnerableApp)"
 
 on:
   workflow_dispatch:
-  push:
-    branches: [master]
-    paths:
-      - '.github/workflows/dast-scan.yml'
-      - '.zap/af-plan.yaml'
 
 jobs:
   dast-scan:
@@ -47,7 +42,6 @@ jobs:
             fi
             sleep 5
           done
-          # Show last 20 lines of startup log
           tail -20 /tmp/app.log || true
 
       - name: Make workspace writable for ZAP container

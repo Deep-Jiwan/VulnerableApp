@@ -1,13 +1,8 @@
-# This workflow will build a Java project with Gradle, create repository tag, and push a new docker image to docker hub
+# Disabled auto-trigger — run manually only
 name: Create Tag and Push Image to DockerHub
 
 on:
-  push:
-    branches: [ master ]
-    paths-ignore:
-      - 'metrics/**'
-      - '**/*.md'
-      - '*.md'
+  workflow_dispatch:
 
 jobs:
   build-and-push:
