@@ -2,6 +2,11 @@ name: "ZAP DAST Scan (VulnerableApp)"
 
 on:
   workflow_dispatch:
+  push:
+    branches: [master]
+    paths:
+      - '.github/workflows/dast-scan.yml'
+      - '.zap/af-plan.yaml'
 
 jobs:
   dast-scan:
